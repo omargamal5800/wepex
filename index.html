@@ -482,22 +482,28 @@
     /* Package Header */
     .package-header {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 1rem;
+      gap: 0.8rem;
       margin-bottom: 1.5rem;
       position: relative;
       z-index: 2;
+      text-align: center;
     }
     .package-icon {
-      font-size: 2.8rem;
+      font-size: 3.5rem;
       animation: float 3s ease-in-out infinite;
       filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+      display: block;
+      margin-bottom: 0.3rem;
+      line-height: 1;
     }
     .package-header h3 {
       font-size: 1.6rem;
       font-weight: 900;
       line-height: 1.2;
       margin: 0;
+      text-align: center;
     }
     .package-card.custom .package-header h3 {
       color: var(--accent);
@@ -804,6 +810,16 @@
       }
     }
 </style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EZRKX76XPZ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-EZRKX76XPZ');
+</script>
 </head>
 <body>
 
@@ -1053,7 +1069,10 @@
       <div class="col-lg-3 col-md-6">
         <div class="package-card discount" data-tilt>
           <div class="discount-badge" data-en="SAVE 50%" data-ar="وفر 50%">SAVE 50%</div>
-          <div class="package-header"><span class="package-icon">🚀</span><h3>LaunchPad</h3></div>
+          <div class="package-header">
+            <span class="package-icon">🚀</span>
+            <h3>LaunchPad</h3>
+          </div>
           <p class="package-desc" data-en="Interactive Landing Page" data-ar="صفحة هبوط تفاعلية">Interactive Landing Page</p>
           <div class="price-box"><span class="original-price">10,000 LE</span><span class="price">5,000 LE</span></div>
           <ul class="features-list">
@@ -1069,7 +1088,10 @@
       <div class="col-lg-3 col-md-6">
         <div class="package-card featured" data-tilt>
           <div class="featured-badge" data-en="MOST POPULAR" data-ar="الأكثر طلباً">MOST POPULAR</div>
-          <div class="package-header"><span class="package-icon">🏢</span><h3>BrandSphere</h3></div>
+          <div class="package-header">
+            <span class="package-icon">🏢</span>
+            <h3>BrandSphere</h3>
+          </div>
           <p class="package-desc" data-en="Corporate Multi-Page Website" data-ar="موقع شركاتي متعدد الصفحات">Corporate Multi-Page Website</p>
           <div class="price-box"><span class="price">15,000 LE</span></div>
           <ul class="features-list">
@@ -1085,7 +1107,10 @@
       <div class="col-lg-3 col-md-6">
         <div class="package-card discount" data-tilt>
           <div class="discount-badge" data-en="SAVE 50%" data-ar="وفر 50%">SAVE 50%</div>
-          <div class="package-header"><span class="package-icon">🛒</span><h3>CommerceFlow</h3></div>
+          <div class="package-header">
+            <span class="package-icon">🛒</span>
+            <h3>CommerceFlow</h3>
+          </div>
           <p class="package-desc" data-en="E-Commerce / Dashboard" data-ar="متجر إلكتروني / داشبورد">E-Commerce / Dashboard</p>
           <div class="price-box"><span class="original-price">60,000 LE</span><span class="price">30,000 LE</span></div>
           <ul class="features-list">
@@ -1105,7 +1130,10 @@
             <img src="meeting.jpg" alt="Graduation Project">
             <div class="grad-project-text" data-en="Your Future Starts Here" data-ar="مستقبلك يبدأ هنا">Your Future Starts Here</div>
           </div>
-          <div class="package-header"><h3 data-en="Graduation Project" data-ar="مشروع التخرج">Graduation Project</h3></div>
+          <div class="package-header">
+            <span class="package-icon">🎓</span>
+            <h3 data-en="Graduation Project" data-ar="مشروع التخرج">Graduation Project</h3>
+          </div>
           <p class="package-desc" data-en="Custom pricing based on your project requirements. We help students build impressive graduation projects that stand out." data-ar="سعر مخصص حسب متطلبات مشروعك. بنساعد الطلبة يبنو مشاريع تخرج مبهرة تلفت الانتباه.">Custom pricing based on your project requirements. We help students build impressive graduation projects that stand out.</p>
           <div class="price-box">
             <span class="price" data-en="Custom Price" data-ar="سعر مخصص">Custom Price</span>
