@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>WePEX — We Build Websites That Convert</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root { --primary:#FF6B6B; --secondary:#4ECDC4; --accent:#FFE66D; --dark:#2D3436; --light:#F7F7F7; --white:#ffffff; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Poppins','Cairo',sans-serif; background:var(--light); color:var(--dark); overflow-x:hidden; line-height: 1.6; }
+    body[dir="rtl"] { font-family:'Cairo','Poppins',sans-serif; }
+
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)} }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+    @keyframes glow { 0%,100%{box-shadow:0 0 20px rgba(255,107,107,0.3)} 50%{box-shadow:0 0 40px rgba(255,107,107,0.6),0 0 60px rgba(255,107,107,0.3)} }
+    @keyframes slideUp { from{opacity:0;transform:translateY(50px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes bounceIn { 0%{transform:scale(0);opacity:0} 50%{transform:scale(1.2)} 100%{transform:scale(1);opacity:1} }
+    @keyframes rotateIn { from{transform:rotate(-180deg) scale(0);opacity:0} to{transform:rotate(0) scale(1);opacity:1} }
+    @keyframes kamehameha { 0%{transform:scale(1);box-shadow:0 0 0 0 rgba(78,205,196,0.7)} 70%{transform:scale(1.1);box-shadow:0 0 0 20px rgba(78,205,196,0)} 100%{transform:scale(1);box-shadow:0 0 0 0 rgba(78,205,196,0)} }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    @keyframes scrollReveal { from{opacity:0;transform:translateY(80px) scale(0.9)} to{opacity:1;transform:translateY(0) scale(1)} }
+    @keyframes aura { 0%{transform:scale(1);opacity:0.5} 100%{transform:scale(2);opacity:0} }
+    @keyframes shimmer { 0%{background-position:-1000px 0} 100%{background-position:1000px 0} }
+    @keyframes textGlow { 0%,100%{text-shadow:0 0 10px rgba(255,107,107,0.5)} 50%{text-shadow:0 0 30px rgba(255,107,107,0.8),0 0 60px rgba(255,107,107,0.4)} }
+
+    /* ===== FIXED SPACING SYSTEM ===== */
+    .section-padding { padding: 80px 0; }
+    .section-padding-lg { padding: 100px 0; }
+
+    /* Language Switcher */
+    .lang-switch { position:fixed; top:20px; right:20px; z-index:1002; display:flex; gap:8px; background:var(--white); padding:8px 16px; border-radius:50px; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+    .lang-switch button { border:none; background:transparent; padding:6px 14px; border-radius:20px; font-weight:700; font-size:0.85rem; cursor:pointer; transition:all 0.3s; font-family:'Poppins','Cairo',sans-serif; }
+    .lang-switch button.active { background:var(--dark); color:var(--white); }
+    .lang-switch button:not(.active):hover { background:var(--light); }
+
+    /* Navbar */
+    .navbar { background:var(--white)!important; border-bottom:1px solid rgba(0,0,0,0.05)!important; padding:1rem 0; position:fixed; top:0; left:0; width:100%; z-index:1000; transition:transform 0.4s ease, padding 0.3s ease; }
+    .navbar.hidden { transform:translateY(-100%); }
+    .navbar-brand { font-size:2rem; font-weight:900; color:var(--dark)!important; text-decoration:none; transition:all 0.3s; }
+    .navbar-brand .e-letter { display:inline-block; color:var(--primary); transform:rotate(-15deg) scale(1.1); transition:all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55); transform-origin:center; }
+    .nav-links { display:flex; gap:2rem; list-style:none; margin:0; padding:0; }
+    .nav-links a { font-weight:600; color:var(--dark); text-decoration:none; transition:all 0.3s; position:relative; font-size:0.95rem; }
+    .nav-links a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:var(--primary); transition:width 0.3s; }
+    .nav-links a:hover::after { width:100%; }
+    .nav-links a:hover { color:var(--primary); }
+    .navbar-toggler { border:none; background:transparent; font-size:1.5rem; }
+
+    /* Hero - FIXED SPACING */
+    .hero-section { min-height:100vh; background:linear-gradient(135deg,var(--light) 0%,rgba(255,230,109,0.1) 100%); position:relative; overflow:hidden; padding:160px 0 100px; }
+    .hero-section::before { content:''; position:absolute; width:300px; height:300px; background:radial-gradient(circle,rgba(255,107,107,0.15) 0%,transparent 70%); border-radius:50%; top:10%; left:5%; animation:float 8s ease-in-out infinite; }
+    .hero-section::after { content:''; position:absolute; width:400px; height:400px; background:radial-gradient(circle,rgba(78,205,196,0.1) 0%,transparent 70%); border-radius:50%; bottom:5%; right:5%; animation:float 10s ease-in-out infinite reverse; }
+    .hero-left { animation:slideUp 1s ease-out; position:relative; z-index:2; padding-right: 2rem; }
+    .hero-left h1 { font-size:clamp(2.5rem,5vw,4rem); font-weight:900; line-height:1.2; margin-bottom:1.5rem; color:var(--dark); position:relative; z-index:2; background:linear-gradient(135deg,var(--dark) 0%,var(--primary) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .hero-left h1 span { background:linear-gradient(135deg,var(--primary) 0%,#FF8E53 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:textGlow 2s ease-in-out infinite; }
+    .hero-left .lead { font-size:1.1rem; color:#636e72; line-height:1.8; margin-bottom:2rem; position:relative; z-index:2; background:rgba(247,247,247,0.8); padding:1.5rem; border-radius:12px; backdrop-filter:blur(5px); }
+    .badge-custom { display:inline-flex; align-items:center; gap:8px; background:var(--dark); color:var(--accent); padding:10px 24px; border-radius:50px; font-weight:600; font-size:0.9rem; margin-bottom:2rem; animation:pulse 2s ease-in-out infinite; position:relative; z-index:2; }
+    .hero-right { position:relative; animation:slideUp 1s ease-out 0.3s both; z-index:1; padding-left: 1rem; }
+    .hero-right img { max-width:100%; border-radius:20px; box-shadow:0 30px 60px rgba(0,0,0,0.15); animation:float 6s ease-in-out infinite; transition:all 0.4s; }
+    .hero-right img:hover { transform:scale(1.03); box-shadow:0 40px 80px rgba(0,0,0,0.2); }
+    .floating-badge { position:absolute; background:var(--white); padding:12px 20px; border-radius:50px; box-shadow:0 10px 30px rgba(0,0,0,0.1); font-weight:700; font-size:0.85rem; animation:float 4s ease-in-out infinite; z-index:3; }
+    .badge-1 { top:20%; left:-10%; color:var(--primary); animation-delay:0s; }
+    .badge-2 { top:50%; left:-5%; color:var(--secondary); animation-delay:1s; }
+    .badge-3 { top:15%; right:-5%; color:var(--accent); background:var(--dark); animation-delay:2s; }
+
+    /* Anime Button */
+    .anime-btn { position:relative; display:inline-flex; align-items:center; gap:10px; padding:1.2rem 2.5rem; font-size:1.1rem; font-weight:900; font-family:'Poppins','Cairo',sans-serif; color:var(--white); background:linear-gradient(135deg,var(--primary) 0%,#FF8E53 100%); border:none; border-radius:50px; cursor:pointer; overflow:hidden; transition:all 0.3s; text-transform:uppercase; letter-spacing:1px; box-shadow:0 10px 30px rgba(255,107,107,0.3); }
+    .anime-btn::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent); transition:left 0.5s; }
+    .anime-btn:hover::before { left:100%; }
+    .anime-btn:hover { transform:scale(1.1); box-shadow:0 0 30px rgba(255,107,107,0.6),0 0 60px rgba(255,107,107,0.3); animation:kamehameha 1s ease-in-out infinite; }
+    .anime-btn .aura { position:absolute; top:50%; left:50%; width:100%; height:100%; border-radius:50px; background:rgba(255,230,109,0.3); transform:translate(-50%,-50%); opacity:0; }
+    .anime-btn:hover .aura { animation:aura 0.6s ease-out infinite; }
+    .btn-outline-custom { padding:1.2rem 2.5rem; font-size:1.1rem; font-weight:700; border:2px solid var(--dark); color:var(--dark); background:transparent; border-radius:50px; transition:all 0.3s; font-family:'Poppins','Cairo',sans-serif; }
+    .btn-outline-custom:hover { background:var(--dark); color:var(--white); transform:scale(1.05); }
+
+    /* Social Buttons - FIXED SPACING */
+    .social-links { display:flex; gap:1rem; margin-top:2.5rem; }
+    .social-btn { width:50px; height:50px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.2rem; color:var(--white); text-decoration:none; transition:all 0.3s; box-shadow:0 5px 15px rgba(0,0,0,0.1); }
+    .social-btn:hover { transform:translateY(-5px) scale(1.1); box-shadow:0 10px 25px rgba(0,0,0,0.2); }
+    .social-btn.facebook { background:#1877F2; }
+    .social-btn.instagram { background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); }
+    .social-btn.linkedin { background:#0A66C2; }
+
+    /* Clients Section - FIXED */
+    .clients-section { padding: 60px 0; background: var(--white); border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .clients-section h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .clients-section p { color: #636e72; font-size: 0.95rem; }
+    .client-logo { opacity: 0.6; transition: opacity 0.3s; }
+    .client-logo:hover { opacity: 1; }
+
+    /* Why Website Section - FIXED SPACING */
+    .why-section { padding:100px 0; background:linear-gradient(135deg,var(--dark) 0%,#1a1a2e 100%); position:relative; overflow:hidden; }
+    .why-section::before { content:''; position:absolute; width:100%; height:100%; background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="%23FF6B6B10" stroke-width="0.5"/></svg>'); background-size:100px 100px; animation:float 20s linear infinite; }
+    .why-section h2 { font-size:clamp(2rem,5vw,3.5rem); font-weight:900; color:var(--accent); text-align:center; margin-bottom:60px; position:relative; z-index:1; }
+    .reason-card { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:2.5rem 2rem; text-align:center; transition:all 0.4s; backdrop-filter:blur(10px); position:relative; z-index:1; animation:scrollReveal 0.8s ease-out both; overflow:hidden; margin-bottom: 1rem; }
+    .reason-card:nth-child(1){animation-delay:0.1s} .reason-card:nth-child(2){animation-delay:0.2s} .reason-card:nth-child(3){animation-delay:0.3s}
+    .reason-card:nth-child(4){animation-delay:0.4s} .reason-card:nth-child(5){animation-delay:0.5s} .reason-card:nth-child(6){animation-delay:0.6s}
+    .reason-card:hover { transform:translateY(-15px) scale(1.02); border-color:var(--primary); box-shadow:0 20px 40px rgba(255,107,107,0.2); }
+    .reason-card:hover .reason-img { transform:scale(1.1); }
+    .reason-img-wrapper { width:80px; height:80px; border-radius:16px; overflow:hidden; margin:0 auto 1.5rem; position:relative; }
+    .reason-img { width:100%; height:100%; object-fit:cover; transition:all 0.4s; }
+    .reason-title { font-size:1.3rem; font-weight:700; color:var(--secondary); margin-bottom:1rem; line-height: 1.3; }
+    .reason-desc { color:#b2bec3; font-size:0.95rem; line-height:1.8; }
+
+    /* Scroll Reveal - FIXED */
+    .scroll-reveal-section { min-height:100vh; background:var(--dark); position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+    .reveal-container { position:relative; width:100%; height:100vh; }
+    .reveal-card { position:absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; opacity:0; transform:scale(0.8) translateY(100px) rotateX(20deg); transition:all 1s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .reveal-card.active { opacity:1; transform:scale(1) translateY(0) rotateX(0); pointer-events:all; }
+    .reveal-card img { width:65%; max-width:700px; border-radius:20px; box-shadow:0 40px 80px rgba(0,0,0,0.4); animation:float 6s ease-in-out infinite; transition:all 0.4s; }
+    .reveal-card img:hover { transform:scale(1.05); box-shadow:0 50px 100px rgba(0,0,0,0.5); }
+    .text-reveal { position:absolute; top:0; left:0; width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; transform:scale(0.8) rotateY(90deg); transition:all 1s cubic-bezier(0.4,0,0.2,1); pointer-events:none; }
+    .text-reveal.active { opacity:1; transform:scale(1) rotateY(0); pointer-events:all; }
+    .build-text { display:flex; flex-direction:column; align-items:center; line-height:0.9; }
+    .build { font-size:clamp(3rem,10vw,7rem); font-weight:900; color:var(--primary); letter-spacing:0.1em; text-shadow:0 0 30px rgba(255,107,107,0.5); animation:pulse 2s ease-in-out infinite; }
+    .ur { font-size:clamp(2rem,6vw,4rem); font-weight:300; color:var(--secondary); letter-spacing:0.3em; }
+    .wep-text { margin-top:2rem; text-align:center; }
+    .wep { font-size:clamp(4rem,15vw,10rem); font-weight:900; color:var(--accent); letter-spacing:-0.05em; display:block; text-shadow:0 0 40px rgba(255,230,109,0.4); animation:glow 2s ease-in-out infinite; }
+    .subtitle { font-size:1rem; color:#636e72; margin-top:0.5rem; }
+    .scroll-dots { position:absolute; right:2rem; top:50%; transform:translateY(-50%); display:flex; flex-direction:column; gap:1rem; z-index:10; }
+    .scroll-dot { width:12px; height:12px; border-radius:50%; background:rgba(255,255,255,0.3); transition:all 0.3s; cursor:pointer; }
+    .scroll-dot.active { background:var(--primary); transform:scale(1.3); box-shadow:0 0 10px rgba(255,107,107,0.5); }
+    .scroll-dot:hover { background:var(--secondary); }
+
+    /* Features - FIXED SPACING */
+    .features-section { padding:100px 0; }
+    .features-section h2 { text-align:center; font-size:clamp(2rem,5vw,3rem); font-weight:900; margin-bottom:60px; }
+    .feature-item { padding:2.5rem; border-radius:20px; background:var(--white); box-shadow:0 10px 30px rgba(0,0,0,0.05); transition:all 0.3s; height:100%; overflow:hidden; margin-bottom: 1rem; }
+    .feature-item:hover { transform:translateY(-10px); box-shadow:0 20px 40px rgba(0,0,0,0.1); }
+    .feature-item:hover .feature-img { transform:scale(1.1); }
+    .feature-img-wrapper { width:60px; height:60px; border-radius:16px; overflow:hidden; margin-bottom:1.5rem; position:relative; }
+    .feature-img { width:100%; height:100%; object-fit:cover; transition:all 0.4s; }
+    .feature-item h3 { font-size:1.3rem; font-weight:700; margin-bottom:1rem; line-height: 1.3; }
+    .feature-item p { color:#636e72; font-size:0.95rem; line-height:1.8; }
+
+    /* How It Works - FIXED SPACING */
+    .how-section { padding:100px 0; background:linear-gradient(135deg,var(--dark) 0%,#1a1a2e 100%); color:var(--white); }
+    .how-section h2 { text-align:center; font-size:clamp(2rem,5vw,3rem); font-weight:900; margin-bottom:60px; color:var(--accent); }
+    .step-card { text-align:center; padding:2.5rem 1.5rem; position:relative; transition:all 0.3s; margin-bottom: 1rem; }
+    .step-card:hover { transform:translateY(-10px); }
+    .step-number { width:60px; height:60px; border-radius:50%; background:linear-gradient(135deg,var(--primary) 0%,#FF8E53 100%); display:flex; align-items:center; justify-content:center; font-size:1.5rem; font-weight:900; margin:0 auto 1.5rem; color:var(--white); animation:pulse 2s ease-in-out infinite; transition:all 0.3s; }
+    .step-card:hover .step-number { transform:scale(1.2); box-shadow:0 0 30px rgba(255,107,107,0.5); }
+    .step-card h3 { font-size:1.3rem; font-weight:700; margin-bottom:1rem; color:var(--secondary); line-height: 1.3; }
+    .step-card p { color:#b2bec3; font-size:0.95rem; line-height:1.8; }
+
+    /* Packages - FIXED SPACING */
+    .packages-section { padding:100px 0; background:linear-gradient(135deg,var(--light) 0%,rgba(255,230,109,0.05) 100%); }
+    .packages-section h2 { text-align:center; font-size:clamp(2rem,5vw,3.5rem); font-weight:900; margin-bottom:60px; color:var(--dark); }
+    .package-card { background:var(--white); border-radius:24px; padding:2.5rem; box-shadow:0 10px 40px rgba(0,0,0,0.08); transition:all 0.4s; position:relative; overflow:hidden; animation:scrollReveal 0.8s ease-out both; margin-bottom: 1.5rem; height: 100%; display: flex; flex-direction: column; }
+    .package-card:nth-child(1){animation-delay:0.1s} .package-card:nth-child(2){animation-delay:0.2s} .package-card:nth-child(3){animation-delay:0.3s} .package-card:nth-child(4){animation-delay:0.4s}
+    .package-card:hover { transform:translateY(-15px) scale(1.02); box-shadow:0 30px 60px rgba(0,0,0,0.15); }
+    .package-card.discount { border:3px solid var(--primary); }
+    .package-card.featured { border:3px solid var(--secondary); transform:scale(1.05); }
+    .package-card.featured:hover { transform:scale(1.08) translateY(-15px); }
+    .package-card.custom { border:3px solid var(--accent); background:linear-gradient(135deg,var(--dark) 0%,#1a1a2e 100%); color:var(--white); }
+    .package-card.custom:hover { transform:translateY(-15px) scale(1.02); box-shadow:0 30px 60px rgba(255,230,109,0.2); }
+    .discount-badge { position:absolute; top:-3px; right:-3px; background:var(--primary); color:var(--white); padding:0.5rem 1.5rem; font-weight:700; font-size:0.9rem; border-radius:0 20px 0 20px; animation:pulse 2s ease-in-out infinite; }
+    .featured-badge { position:absolute; top:-3px; left:50%; transform:translateX(-50%); background:var(--secondary); color:var(--white); padding:0.5rem 2rem; font-weight:700; font-size:0.9rem; border-radius:0 0 20px 20px; }
+    .custom-badge { position:absolute; top:-3px; left:50%; transform:translateX(-50%); background:var(--accent); color:var(--dark); padding:0.5rem 2rem; font-weight:700; font-size:0.9rem; border-radius:0 0 20px 20px; }
+    .package-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; }
+    .package-icon { font-size:2.5rem; animation:float 3s ease-in-out infinite; }
+    .package-header h3 { font-size:1.8rem; font-weight:700; line-height: 1.2; }
+    .package-card.custom .package-header h3 { color:var(--accent); }
+    .package-desc { color:#636e72; margin-bottom:1.5rem; font-size:1rem; line-height: 1.5; }
+    .package-card.custom .package-desc { color:#b2bec3; }
+    .price-box { margin-bottom:2rem; padding: 1rem 0; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05); }
+    .original-price { display:block; font-size:1.2rem; color:#b2bec3; text-decoration:line-through; margin-bottom:0.5rem; }
+    .price { font-size:3rem; font-weight:900; color:var(--dark); line-height: 1; }
+    .package-card.discount .price { color:var(--primary); animation:pulse 2s ease-in-out infinite; }
+    .package-card.custom .price { color:var(--accent); font-size:2rem; }
+    .price-note { font-size:0.9rem; color:#b2bec3; margin-top:0.5rem; }
+    .features-list { list-style:none; margin-bottom:2rem; padding:0; flex-grow: 1; }
+    .features-list li { padding:0.8rem 0; border-bottom:1px solid #dfe6e9; font-size:0.95rem; transition:all 0.3s; line-height: 1.5; }
+    .package-card.custom .features-list li { border-bottom-color:rgba(255,255,255,0.1); color:#b2bec3; }
+    .features-list li:hover { padding-left:10px; color:var(--primary); }
+    .features-list li::before { content:"✓ "; color:var(--secondary); font-weight:700; }
+    .package-btn { width:100%; padding:1rem; border:2px solid var(--dark); background:transparent; color:var(--dark); font-weight:700; font-size:1rem; border-radius:12px; cursor:pointer; transition:all 0.3s; font-family:'Poppins','Cairo',sans-serif; margin-top: auto; }
+    .package-btn:hover { background:var(--dark); color:var(--white); transform:scale(1.05); }
+    .package-btn.primary { background:linear-gradient(135deg,var(--secondary) 0%,#44A08D 100%); border-color:transparent; color:var(--white); box-shadow:0 5px 20px rgba(78,205,196,0.3); }
+    .package-btn.primary:hover { background:linear-gradient(135deg,#3dbdb4 0%,#3a8f7d 100%); box-shadow:0 10px 30px rgba(78,205,196,0.5); }
+    .package-btn.accent { background:linear-gradient(135deg,var(--accent) 0%,#FFD93D 100%); border-color:transparent; color:var(--dark); box-shadow:0 5px 20px rgba(255,230,109,0.3); }
+    .package-btn.accent:hover { background:linear-gradient(135deg,#FFD93D 0%,#FFC107 100%); box-shadow:0 10px 30px rgba(255,230,109,0.5); }
+    .revisions-note { text-align:center; margin-top:40px; color:#636e72; font-size:0.9rem; padding: 1rem; background: rgba(0,0,0,0.03); border-radius: 12px; }
+
+    /* Graduation Project Image - FIXED */
+    .grad-project-wrapper { position:relative; margin-bottom:1.5rem; border-radius:16px; overflow:hidden; }
+    .grad-project-wrapper img { width:100%; height:180px; object-fit:cover; transition:all 0.4s; }
+    .grad-project-wrapper:hover img { transform:scale(1.1); }
+    .grad-project-wrapper::after { content:''; position:absolute; bottom:0; left:0; width:100%; height:60%; background:linear-gradient(to top,rgba(45,52,54,0.9),transparent); }
+    .grad-project-text { position:absolute; bottom:15px; left:15px; color:var(--accent); font-weight:900; font-size:1.2rem; z-index:2; }
+
+    /* Testimonials - FIXED SPACING */
+    .testimonial-section { padding:100px 0; background:var(--light); }
+    .testimonial-section h2 { text-align:center; font-size:clamp(2rem,5vw,3rem); font-weight:900; margin-bottom:60px; }
+    .testimonial-card { background:var(--white); border-radius:20px; padding:2.5rem; box-shadow:0 10px 30px rgba(0,0,0,0.05); transition:all 0.3s; height:100%; margin-bottom: 1rem; }
+    .testimonial-card:hover { transform:translateY(-10px); box-shadow:0 20px 40px rgba(0,0,0,0.1); }
+    .stars { color:var(--accent); font-size:1.2rem; margin-bottom:1.5rem; }
+    .testimonial-card p { color:#636e72; font-size:1rem; line-height:1.8; margin-bottom:1.5rem; font-style:italic; }
+    .testimonial-author { display:flex; align-items:center; gap:1rem; }
+    .testimonial-author img { width:50px; height:50px; border-radius:50%; object-fit:cover; transition:all 0.3s; }
+    .testimonial-card:hover .testimonial-author img { transform:scale(1.1); }
+    .testimonial-author h4 { font-size:1rem; font-weight:700; margin:0; line-height: 1.3; }
+    .testimonial-author span { font-size:0.85rem; color:#636e72; line-height: 1.3; }
+
+    /* FAQ - FIXED SPACING */
+    .faq-section { padding:100px 0; }
+    .faq-section h2 { text-align:center; font-size:clamp(2rem,5vw,3rem); font-weight:900; margin-bottom:60px; }
+    .accordion-item { border:none; margin-bottom:1rem; border-radius:16px!important; overflow:hidden; box-shadow:0 5px 20px rgba(0,0,0,0.05); }
+    .accordion-button { font-weight:600; padding:1.5rem; border-radius:16px!important; line-height: 1.5; }
+    .accordion-button:not(.collapsed) { background:linear-gradient(135deg,var(--primary) 0%,#FF8E53 100%); color:var(--white); box-shadow:none; }
+    .accordion-button:focus { box-shadow:none; border-color:rgba(0,0,0,0.05); }
+    .accordion-body { padding:1.5rem; color:#636e72; line-height:1.8; }
+
+    /* Footer - FIXED SPACING */
+    footer { background:var(--dark); color:var(--white); padding:80px 0 40px; }
+    footer h3 { font-size:1.2rem; font-weight:700; margin-bottom:1.5rem; color:var(--accent); line-height: 1.3; }
+    footer ul { list-style:none; padding:0; }
+    footer ul li { margin-bottom:1rem; line-height: 1.5; }
+    footer ul li a { color:#b2bec3; text-decoration:none; transition:all 0.3s; display: inline-block; }
+    footer ul li a:hover { color:var(--primary); padding-left:5px; }
+    footer .border-top { border-color:rgba(255,255,255,0.1)!important; margin-top: 3rem; padding-top: 2rem; }
+    footer p { color:#636e72; line-height: 1.6; margin-bottom: 0.5rem; }
+    footer p a { color:var(--white); text-decoration:none; font-weight:700; }
+    footer p a:hover { color:var(--primary); }
+    .footer-social { display:flex; gap:1rem; margin-top:1.5rem; }
+    .footer-social a { width:40px; height:40px; border-radius:50%; background:rgba(255,255,255,0.1); display:flex; align-items:center; justify-content:center; color:var(--white); text-decoration:none; transition:all 0.3s; font-size:1.2rem; }
+    .footer-social a:hover { background:var(--primary); transform:translateY(-3px); }
+
+    /* Modal - FIXED SPACING */
+    .modal-overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); display:none; align-items:center; justify-content:center; z-index:1000; backdrop-filter:blur(10px); padding: 20px; }
+    .modal-overlay.active { display:flex; animation:fadeIn 0.3s ease-out; }
+    .modal-box { background:var(--white); border-radius:24px; padding:3rem; max-width:600px; width:90%; max-height:90vh; overflow-y:auto; position:relative; animation:bounceIn 0.5s ease-out; }
+    .modal-close { position:absolute; top:1rem; right:1rem; font-size:2rem; cursor:pointer; color:#636e72; transition:all 0.3s; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+    .modal-close:hover { color:var(--primary); transform:rotate(90deg); background: rgba(0,0,0,0.05); }
+    .modal-box h2 { font-size:2rem; margin-bottom:1rem; color:var(--dark); line-height: 1.2; }
+    .modal-box p { color:#636e72; margin-bottom:2rem; line-height: 1.6; }
+    .survey-form label { display:block; margin-bottom:0.5rem; font-weight:600; color:var(--dark); line-height: 1.4; }
+    .survey-form input, .survey-form select, .survey-form textarea { width:100%; padding:1rem; border:2px solid #dfe6e9; border-radius:12px; font-family:'Poppins','Cairo',sans-serif; font-size:1rem; margin-bottom:1.5rem; transition:all 0.3s; line-height: 1.5; }
+    .survey-form input:focus, .survey-form select:focus, .survey-form textarea:focus { outline:none; border-color:var(--primary); box-shadow:0 0 0 3px rgba(255,107,107,0.1); }
+    .survey-form button { width:100%; padding:1rem; background:linear-gradient(135deg,var(--primary) 0%,#FF8E53 100%); color:var(--white); border:none; border-radius:12px; font-size:1.1rem; font-weight:700; cursor:pointer; transition:all 0.3s; font-family:'Poppins','Cairo',sans-serif; line-height: 1.5; }
+    .survey-form button:hover { transform:scale(1.05); box-shadow:0 10px 30px rgba(255,107,107,0.4); }
+    .ai-result { display:none; margin-top:2rem; padding:2rem; background:linear-gradient(135deg,var(--light) 0%,rgba(255,230,109,0.2) 100%); border-radius:16px; border-left:4px solid var(--secondary); }
+    .ai-result.active { display:block; animation:slideUp 0.5s ease-out; }
+    .ai-result h3 { color:var(--secondary); margin-bottom:1rem; line-height: 1.3; }
+    .ai-result p { color:var(--dark); line-height:1.8; }
+
+    /* Admin - FIXED */
+    .admin-panel { position:fixed; top:0; right:-400px; width:400px; height:100%; background:var(--white); box-shadow:-10px 0 40px rgba(0,0,0,0.1); z-index:999; transition:right 0.4s ease-out; overflow-y:auto; padding:2rem; }
+    .admin-panel.active { right:0; }
+    .admin-toggle { position:fixed; bottom:2rem; right:2rem; width:60px; height:60px; background:linear-gradient(135deg,var(--dark) 0%,#636e72 100%); color:var(--white); border:none; border-radius:50%; cursor:pointer; font-size:1.5rem; z-index:998; transition:all 0.3s; box-shadow:0 5px 20px rgba(0,0,0,0.2); }
+    .admin-toggle:hover { transform:scale(1.1) rotate(90deg); box-shadow:0 10px 30px rgba(0,0,0,0.3); }
+    .admin-login-overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); align-items:center; justify-content:center; z-index:1001; backdrop-filter:blur(10px); padding: 20px; }
+    .admin-login-overlay.active { display:flex; }
+    .login-box { background:var(--white); padding:3rem; border-radius:24px; text-align:center; animation:bounceIn 0.5s ease-out; max-width:400px; width:90%; }
+    .login-box h2 { margin-bottom:2rem; color:var(--dark); line-height: 1.2; }
+    .login-box input { width:100%; padding:1rem; border:2px solid #dfe6e9; border-radius:12px; margin-bottom:1rem; font-family:'Poppins','Cairo',sans-serif; font-size:1rem; line-height: 1.5; }
+    .login-box button { width:100%; padding:1rem; background:var(--dark); color:var(--white); border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer; font-family:'Poppins','Cairo',sans-serif; transition:all 0.3s; line-height: 1.5; }
+    .login-box button:hover { background:var(--primary); }
+    .admin-content h2 { margin-bottom:2rem; color:var(--dark); line-height: 1.2; }
+    .admin-content h3 { margin:1.5rem 0 1rem; color:var(--secondary); line-height: 1.3; }
+    .admin-content p { color:#636e72; line-height:1.8; margin-bottom:1rem; }
+    .admin-content code { background:var(--light); padding:0.2rem 0.5rem; border-radius:4px; font-family:monospace; color:var(--primary); word-break: break-all; }
+    .admin-content .edit-section { background:var(--light); padding:1.5rem; border-radius:12px; margin-bottom:1.5rem; }
+    .admin-content .edit-section h4 { color:var(--dark); margin-bottom:0.5rem; font-size:1.1rem; line-height: 1.3; }
+    .admin-content .edit-section p { font-size:0.9rem; margin-bottom:0.5rem; line-height: 1.5; }
+    .admin-social { display:flex; gap:0.5rem; margin-top:1rem; flex-wrap: wrap; }
+    .admin-social a { padding:0.5rem 1rem; border-radius:8px; background:var(--dark); color:var(--white); text-decoration:none; font-size:0.85rem; transition:all 0.3s; line-height: 1.5; }
+    .admin-social a:hover { background:var(--primary); transform:translateY(-2px); }
+
+    /* Image Hover Effects */
+    .img-hover { transition:all 0.4s; overflow:hidden; border-radius:16px; }
+    .img-hover img { transition:all 0.4s; width:100%; height:100%; object-fit:cover; }
+    .img-hover:hover img { transform:scale(1.1); }
+    .img-hover:hover { box-shadow:0 20px 40px rgba(0,0,0,0.2); }
+
+    /* RTL Support */
+    [dir="rtl"] .scroll-dots { right:auto; left:2rem; }
+    [dir="rtl"] .admin-panel { right:auto; left:-400px; }
+    [dir="rtl"] .admin-panel.active { left:0; right:auto; }
+    [dir="rtl"] .admin-toggle { right:auto; left:2rem; }
+    [dir="rtl"] .lang-switch { right:auto; left:20px; }
+    [dir="rtl"] .floating-badge.badge-1 { left:auto; right:-10%; }
+    [dir="rtl"] .floating-badge.badge-2 { left:auto; right:-5%; }
+    [dir="rtl"] .floating-badge.badge-3 { right:auto; left:-5%; }
+    [dir="rtl"] .discount-badge { right:auto; left:-3px; border-radius:20px 0 20px 0; }
+    [dir="rtl"] .hero-left { padding-right: 0; padding-left: 2rem; }
+    [dir="rtl"] .hero-right { padding-left: 0; padding-right: 1rem; }
+
+    @media (max-width:768px) {
+      .hero-section { padding:120px 0 60px; }
+      .hero-left h1 { font-size:2.2rem; }
+      .hero-left .lead { padding: 1rem; font-size: 1rem; }
+      .floating-badge { display:none; }
+      .package-card.featured { transform:scale(1); }
+      .package-card.featured:hover { transform:scale(1.02) translateY(-10px); }
+      .scroll-dots { right:1rem; }
+      .reveal-card img { width:90%; }
+      .admin-panel { width:100%; right:-100%; }
+      .anime-btn { padding:1rem 2rem; font-size:1rem; }
+      .lang-switch { top:10px; right:10px; padding:6px 12px; }
+      .nav-links { display:none; }
+      .navbar.scrolled .navbar-brand { font-size:1.5rem; }
+      .social-links { justify-content:center; }
+      .section-padding { padding: 60px 0; }
+      .section-padding-lg { padding: 80px 0; }
+      .modal-box { padding: 2rem 1.5rem; }
+      .login-box { padding: 2rem 1.5rem; }
+      .reason-card { padding: 2rem 1.5rem; }
+      .feature-item { padding: 2rem; }
+      .step-card { padding: 2rem 1rem; }
+      .package-card { padding: 2rem; }
+      .testimonial-card { padding: 2rem; }
+    }
+
+    @media (max-width: 576px) {
+      .hero-left h1 { font-size: 1.8rem; }
+      .badge-custom { font-size: 0.8rem; padding: 8px 16px; }
+      .anime-btn { padding: 0.9rem 1.8rem; font-size: 0.9rem; }
+      .btn-outline-custom { padding: 0.9rem 1.8rem; font-size: 0.9rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="lang-switch">
+  <button class="active" onclick="setLang('en')" id="btn-en">EN</button>
+  <button onclick="setLang('ar')" id="btn-ar">AR</button>
+</div>
+
+<nav class="navbar navbar-expand-md" id="navbar">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">W<span class="e-letter">e</span>PEX</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="nav-links mx-auto mb-2 mb-md-0">
+        <li><a href="#why" data-en="Why Website" data-ar="ليه موقع؟">Why Website</a></li>
+        <li><a href="#features" data-en="Features" data-ar="المميزات">Features</a></li>
+        <li><a href="#how" data-en="How It Works" data-ar="ازاي بنشتغل">How It Works</a></li>
+        <li><a href="#packages" data-en="Packages" data-ar="الباقات">Packages</a></li>
+        <li><a href="#testimonials" data-en="Testimonials" data-ar="آراء العملاء">Testimonials</a></li>
+        <li><a href="#faq" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a></li>
+      </ul>
+      <div class="d-flex gap-3 align-items-center">
+        <button class="anime-btn" onclick="openSurvey()" style="padding:0.8rem 1.5rem;font-size:0.9rem;">
+          <span class="aura"></span>
+          <span data-en="POWER UP" data-ar="ابدأ الآن">POWER UP</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section class="hero-section" id="hero">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 hero-left">
+        <div class="badge-custom">
+          <span data-en="We Build. You Grow. No BS." data-ar="نبني. تكبر. بلا فلسفة.">We Build. You Grow. No BS.</span>
+        </div>
+        <h1 data-en="We Build Websites That Convert Visitors Into Customers" data-ar="نبني مواقع تحول الزوار لعملاء">We Build Websites That Convert Visitors Into Customers</h1>
+        <p class="lead" data-en="Young, ambitious, and ready to build your digital empire. No corporate fluff, no hidden fees — just pure talent delivering websites that actually make you money. We turned our rejection into your advantage." data-ar="شباب، طموحيين، وجاهزين نبني إمبراطوريتك الرقمية. مفيش كلام فاضي، مفيش رسوم خفية — بس موهبة بتسلم مواقع بتجيب لك فلوس. حولنا رفضنا لميزتك.">Young, ambitious, and ready to build your digital empire. No corporate fluff, no hidden fees — just pure talent delivering websites that actually make you money. We turned our rejection into your advantage.</p>
+        <div class="mt-4 d-flex gap-3 flex-wrap">
+          <button class="anime-btn" onclick="openSurvey()">
+            <span class="aura"></span>
+            <span data-en="POWER UP YOUR BUSINESS" data-ar="ابدأ مشروعك الآن">POWER UP YOUR BUSINESS</span>
+          </button>
+          <a href="#packages" class="btn-outline-custom" data-en="View Packages" data-ar="شوف الباقات">View Packages</a>
+        </div>
+        <div class="social-links">
+          <a href="https://facebook.com/wepex" target="_blank" class="social-btn facebook" title="Facebook">f</a>
+          <a href="https://instagram.com/wepex" target="_blank" class="social-btn instagram" title="Instagram">📷</a>
+          <a href="https://linkedin.com/company/wepex" target="_blank" class="social-btn linkedin" title="LinkedIn">in</a>
+        </div>
+      </div>
+      <div class="col-lg-6 hero-right">
+        <div class="position-relative img-hover">
+          <img src="hero-main.jpg" alt="Website Building" style="width: 100%; height: auto;">
+          <div class="floating-badge badge-1">LaunchPad</div>
+          <div class="floating-badge badge-2">BrandSphere</div>
+          <div class="floating-badge badge-3">CommerceFlow</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="clients-section">
+  <div class="container">
+    <div class="row align-items-center gy-4">
+      <div class="col-xl-4 col-lg-12 mb-3 mb-xl-0">
+        <h2 data-en="Trusted by" data-ar="ثقة">Trusted by</h2>
+        <p class="small mb-0" data-en="Startups, agencies, and businesses who chose quality over corporate prices." data-ar="ستارت أب، وكالات، وأعمال اختارت الجودة بدل أسعار الشركات الكبيرة.">Startups, agencies, and businesses who chose quality over corporate prices.</p>
+      </div>
+      <div class="col-xl-2 col-lg-3 col-md-4 col-6 client-logo text-center"><div class="p-3 img-hover"><img src="team-work.jpg" alt="Client 1" style="width:120px;height:60px;object-fit:cover;border-radius:8px;"></div></div>
+      <div class="col-xl-2 col-lg-3 col-md-4 col-6 client-logo text-center"><div class="p-3 img-hover"><img src="work-1.jpg" alt="Client 2" style="width:120px;height:60px;object-fit:cover;border-radius:8px;"></div></div>
+      <div class="col-xl-2 col-lg-3 col-md-4 col-6 client-logo text-center"><div class="p-3 img-hover"><img src="work-2.jpg" alt="Client 3" style="width:120px;height:60px;object-fit:cover;border-radius:8px;"></div></div>
+      <div class="col-xl-2 col-lg-3 col-md-4 col-6 client-logo text-center"><div class="p-3 img-hover"><img src="work-3.jpg" alt="Client 4" style="width:120px;height:60px;object-fit:cover;border-radius:8px;"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="why-section" id="why">
+  <div class="container">
+    <h2 data-en="Why You NEED a Website?" data-ar="ليه لازم يكون عندك موقع؟">Why You NEED a Website?</h2>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="reason-card">
+          <div class="reason-img-wrapper"><img src="team-work.jpg" alt="Global" class="reason-img"></div>
+          <h3 class="reason-title" data-en="24/7 Global Presence" data-ar="وجود عالمي 24/7">24/7 Global Presence</h3>
+          <p class="reason-desc" data-en="Your business never sleeps. While you rest, your website works — attracting clients from every corner of the world." data-ar="مشروعك ما بينامش. وأنت نايم، موقعك شغال — بيجيب لك عملا من كل حتة في العالم.">Your business never sleeps. While you rest, your website works — attracting clients from every corner of the world.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="reason-card">
+          <div class="reason-img-wrapper"><img src="meeting.jpg" alt="Money" class="reason-img"></div>
+          <h3 class="reason-title" data-en="Credibility = Money" data-ar="المصداقية = فلوس">Credibility = Money</h3>
+          <p class="reason-desc" data-en="No website = no trust. 75% of consumers judge credibility based on website design. Don't lose money to competitors." data-ar="مش موقع = مش مصدقين. 75% من الناس بيحكمو على مصداقية البيزنس من شكل الموقع. متخسرش فلوس للمنافسين.">No website = no trust. 75% of consumers judge credibility based on website design. Don't lose money to competitors.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="reason-card">
+          <div class="reason-img-wrapper"><img src="work-1.jpg" alt="Growth" class="reason-img"></div>
+          <h3 class="reason-title" data-en="Growth Engine" data-ar="محرك النمو">Growth Engine</h3>
+          <p class="reason-desc" data-en="A website isn't just a page — it's your 24/7 salesperson, lead generator, and brand ambassador combined." data-ar="الموقع مش صفحة بس — هو مندوب المبيعات 24/7، وجامع العملا، وسفير البراند في نفس الوقت.">A website isn't just a page — it's your 24/7 salesperson, lead generator, and brand ambassador combined.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="reason-card">
+          <div class="reason-img-wrapper"><img src="work-2.jpg" alt="Target" class="reason-img"></div>
+          <h3 class="reason-title" data-en="Target the Right People" data-ar="وصل للناس الصح">Target the Right People</h3>
+          <p class="reason-desc" data-en="SEO + Analytics = you know exactly who visits, what they want, and how to convert them into paying customers." data-ar="SEO + Analytics = تعرف بالظبط مين بيزورك، عايز إيه، وازاي تحوله لعميل بيدفع.">SEO + Analytics = you know exactly who visits, what they want, and how to convert them into paying customers.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="reason-card">
+          <div class="reason-img-wrapper"><img src="work-3.jpg" alt="Speed" class="reason-img"></div>
+          <h3 class="reason-title" data-en="Speed = Success" data-ar="السرعة = النجاح">Speed = Success</h3>
+          <p class="reason-desc" data-en="In 2026, if you're not online, you're invisible. Every day without a website is money left on the table." data-ar="في 2026، لو مش على النت = مش موجود. كل يوم بدون موقع = فلوس راحة من إيدك.">In 2026, if you're not online, you're invisible. Every day without a website is money left on the table.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="reason-card">
+          <div class="reason-img-wrapper"><img src="hero-main.jpg" alt="Competition" class="reason-img"></div>
+          <h3 class="reason-title" data-en="Beat Your Competition" data-ar="اكسب المنافسين">Beat Your Competition</h3>
+          <p class="reason-desc" data-en="Your competitors have websites. The question is: will yours be better? With WePEX, it will be." data-ar="منافسينك عندهم مواقع. السؤال: هل موقعك هيكون أحسن؟ مع WePEX، هيكون.">Your competitors have websites. The question is: will yours be better? With WePEX, it will be.</p>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-5">
+      <button class="anime-btn" onclick="openSurvey()">
+        <span class="aura"></span>
+        <span data-en="POWER UP YOUR BUSINESS" data-ar="ابدأ مشروعك الآن">POWER UP YOUR BUSINESS</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="scroll-reveal-section" id="scroll-reveal">
+  <div class="reveal-container">
+    <div class="reveal-card active"><img src="work-1.jpg" alt="Work 1"></div>
+    <div class="text-reveal">
+      <div class="build-text"><span class="build">BUILD</span><span class="ur">UR</span></div>
+      <div class="wep-text"><span class="wep">WEP</span><span class="subtitle">(Yeah, we meant WEB)</span></div>
+    </div>
+    <div class="reveal-card"><img src="work-2.jpg" alt="Work 2"></div>
+    <div class="reveal-card"><img src="work-3.jpg" alt="Work 3"></div>
+  </div>
+  <div class="scroll-dots">
+    <span class="scroll-dot active" onclick="goToSlide(0)"></span>
+    <span class="scroll-dot" onclick="goToSlide(1)"></span>
+    <span class="scroll-dot" onclick="goToSlide(2)"></span>
+    <span class="scroll-dot" onclick="goToSlide(3)"></span>
+  </div>
+</section>
+
+<section class="features-section" id="features">
+  <div class="container">
+    <h2 data-en="What Makes WePEX Different?" data-ar="إيه اللي بيميز WePEX؟">What Makes WePEX Different?</h2>
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-item">
+          <div class="feature-img-wrapper"><img src="work-2.jpg" alt="Speed" class="feature-img"></div>
+          <h3 data-en="Lightning Fast" data-ar="سرعة صاروخية">Lightning Fast</h3>
+          <p data-en="We optimize every pixel. Your site loads in under 2 seconds — because slow sites kill conversions." data-ar="بنحسن كل بيكسل. موقعك بيتحمل في أقل من 2 ثانية — عشان المواقع البطيئة بتقتل المبيعات.">We optimize every pixel. Your site loads in under 2 seconds — because slow sites kill conversions.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-item">
+          <div class="feature-img-wrapper"><img src="team-work.jpg" alt="Design" class="feature-img"></div>
+          <h3 data-en="Custom Design" data-ar="تصميم مخصص">Custom Design</h3>
+          <p data-en="No templates. No copy-paste. Every website is uniquely crafted to match your brand identity." data-ar="مش تمبليتس. مش نسخ ولزق. كل موقع بنبنيه بشكل فريد يعبر عن براندك.">No templates. No copy-paste. Every website is uniquely crafted to match your brand identity.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-item">
+          <div class="feature-img-wrapper"><img src="hero-main.jpg" alt="Mobile" class="feature-img"></div>
+          <h3 data-en="Mobile First" data-ar="موبايل أولاً">Mobile First</h3>
+          <p data-en="60% of traffic is mobile. We design for phones first, then scale up — not the other way around." data-ar="60% من الترافيك موبايل. بنصمم للتليفون أولاً، وبعدين نكبر — مش العكس.">60% of traffic is mobile. We design for phones first, then scale up — not the other way around.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-item">
+          <div class="feature-img-wrapper"><img src="meeting.jpg" alt="Security" class="feature-img"></div>
+          <h3 data-en="SSL + Security" data-ar="حماية + SSL">SSL + Security</h3>
+          <p data-en="Free SSL certificate, secure hosting, and best practices to keep your data safe." data-ar="شهادة SSL مجانية، هوستينج آمن، وأفضل الممارسات لحماية بياناتك.">Free SSL certificate, secure hosting, and best practices to keep your data safe.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-item">
+          <div class="feature-img-wrapper"><img src="work-1.jpg" alt="SEO" class="feature-img"></div>
+          <h3 data-en="SEO Ready" data-ar="جاهز للـ SEO">SEO Ready</h3>
+          <p data-en="Built-in SEO optimization so Google actually finds you. More visibility = more customers." data-ar="SEO مبني جوه الموقع عشان Google يلاقيك. أكتر ظهور = أكتر عملا.">Built-in SEO optimization so Google actually finds you. More visibility = more customers.</p>
+        </div>
+      </div>
+      <div class="col-lg-4 col-md-6">
+        <div class="feature-item">
+          <div class="feature-img-wrapper"><img src="work-3.jpg" alt="Support" class="feature-img"></div>
+          <h3 data-en="Launch Support" data-ar="دعم الإطلاق">Launch Support</h3>
+          <p data-en="We don't just build and leave. We help you launch, test, and optimize for maximum results." data-ar="مش بس بنبني ونمشي. بنساعدك تطلق، تختبر، وتحسن للنتايج القصوى.">We don't just build and leave. We help you launch, test, and optimize for maximum results.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how-section" id="how">
+  <div class="container">
+    <h2 data-en="How It Works" data-ar="ازاي بنشتغل">How It Works</h2>
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <h3 data-en="Tell Us Your Vision" data-ar="قولنا رؤيتك">Tell Us Your Vision</h3>
+          <p data-en="Fill out our survey or book a call. We learn your business, goals, and what makes you unique." data-ar="املأ الاستبيان أو احجز مكالمة. بنتعلم بيزنسك، أهدافك، وإيه اللي بيميزك.">Fill out our survey or book a call. We learn your business, goals, and what makes you unique.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <h3 data-en="We Design & Build" data-ar="نصمم ونبني">We Design & Build</h3>
+          <p data-en="Our team crafts a custom website with animations, responsiveness, and conversion-focused design." data-ar="فريقنا بيصمم موقع مخصص بأنيميشن، ريسبونسيف، وتركيز على التحويل.">Our team crafts a custom website with animations, responsiveness, and conversion-focused design.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <h3 data-en="You Review & Approve" data-ar="تشوف وتوافق">You Review & Approve</h3>
+          <p data-en="See your site before it goes live. We make adjustments until you're 100% satisfied." data-ar="شوف موقعك قبل ما يطلق. بنعدل لحد ما تكون راضي 100%.">See your site before it goes live. We make adjustments until you're 100% satisfied.</p>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="step-card">
+          <div class="step-number">4</div>
+          <h3 data-en="Launch & Grow" data-ar="اطلق وكبر">Launch & Grow</h3>
+          <p data-en="We deploy, optimize, and hand over the keys. Your website starts working for you 24/7." data-ar="بننشر، نحسن، ونسيبلك المفاتيح. موقعك يبدأ يشتغللك 24/7.">We deploy, optimize, and hand over the keys. Your website starts working for you 24/7.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="packages-section" id="packages">
+  <div class="container">
+    <h2 data-en="CHOOSE YOUR WEAPON" data-ar="اختار سلاحك">CHOOSE YOUR WEAPON</h2>
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6">
+        <div class="package-card discount">
+          <div class="discount-badge" data-en="SAVE 50%" data-ar="وفر 50%">SAVE 50%</div>
+          <div class="package-header"><span class="package-icon">🚀</span><h3>LaunchPad</h3></div>
+          <p class="package-desc" data-en="Interactive Landing Page" data-ar="صفحة هبوط تفاعلية">Interactive Landing Page</p>
+          <div class="price-box"><span class="original-price">10,000 LE</span><span class="price">5,000 LE</span></div>
+          <ul class="features-list">
+            <li data-en="Custom UI/UX Design" data-ar="تصميم UI/UX مخصص">Custom UI/UX Design</li>
+            <li data-en="Smooth Animations" data-ar="أنيميشن سلس">Smooth Animations</li>
+            <li data-en="Responsive (All Devices)" data-ar="ريسبونسيف (كل الأجهزة)">Responsive (All Devices)</li>
+            <li data-en="Hosting + Domain + SSL" data-ar="هوستينج + دومين + SSL">Hosting + Domain + SSL</li>
+            <li data-en="Performance Optimization" data-ar="تحسين الأداء">Performance Optimization</li>
+          </ul>
+          <button class="package-btn" onclick="openSurvey()" data-en="Get Started" data-ar="ابدأ الآن">Get Started</button>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="package-card featured">
+          <div class="featured-badge" data-en="MOST POPULAR" data-ar="الأكثر طلباً">MOST POPULAR</div>
+          <div class="package-header"><span class="package-icon">🏢</span><h3>BrandSphere</h3></div>
+          <p class="package-desc" data-en="Corporate Multi-Page Website" data-ar="موقع شركاتي متعدد الصفحات">Corporate Multi-Page Website</p>
+          <div class="price-box"><span class="price">15,000 LE</span></div>
+          <ul class="features-list">
+            <li data-en="3-5 Custom Pages" data-ar="3-5 صفحات مخصصة">3-5 Custom Pages</li>
+            <li data-en="Advanced Animations" data-ar="أنيميشن متقدم">Advanced Animations</li>
+            <li data-en="SEO + Analytics" data-ar="SEO + تحليلات">SEO + Analytics</li>
+            <li data-en="Professional Email Setup" data-ar="إعداد إيميل احترافي">Professional Email Setup</li>
+            <li data-en="Client Training Session" data-ar="جلسة تدريب للعميل">Client Training Session</li>
+          </ul>
+          <button class="package-btn primary" onclick="openSurvey()" data-en="Get Started" data-ar="ابدأ الآن">Get Started</button>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="package-card discount">
+          <div class="discount-badge" data-en="SAVE 50%" data-ar="وفر 50%">SAVE 50%</div>
+          <div class="package-header"><span class="package-icon">🛒</span><h3>CommerceFlow</h3></div>
+          <p class="package-desc" data-en="E-Commerce / Dashboard" data-ar="متجر إلكتروني / داشبورد">E-Commerce / Dashboard</p>
+          <div class="price-box"><span class="original-price">60,000 LE</span><span class="price">30,000 LE</span></div>
+          <ul class="features-list">
+            <li data-en="Full Design System" data-ar="نظام تصميم كامل">Full Design System</li>
+            <li data-en="Cart + Checkout UI" data-ar="عربة + صفحة دفع">Cart + Checkout UI</li>
+            <li data-en="Admin Dashboard" data-ar="داشبورد إدارة">Admin Dashboard</li>
+            <li data-en="Payment Gateway UI" data-ar="واجهة بوابة دفع">Payment Gateway UI</li>
+            <li data-en="Security + Documentation" data-ar="أمان + توثيق">Security + Documentation</li>
+          </ul>
+          <button class="package-btn" onclick="openSurvey()" data-en="Get Started" data-ar="ابدأ الآن">Get Started</button>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <div class="package-card custom">
+          <div class="custom-badge" data-en="GRAD PROJECT" data-ar="مشروع التخرج">GRAD PROJECT</div>
+          <div class="grad-project-wrapper">
+            <img src="meeting.jpg" alt="Graduation Project">
+            <div class="grad-project-text" data-en="Your Future Starts Here" data-ar="مستقبلك يبدأ هنا">Your Future Starts Here</div>
+          </div>
+          <div class="package-header"><h3 data-en="Graduation Project" data-ar="مشروع التخرج">Graduation Project</h3></div>
+          <p class="package-desc" data-en="Custom pricing based on your project requirements. We help students build impressive graduation projects that stand out." data-ar="سعر مخصص حسب متطلبات مشروعك. بنساعد الطلبة يبنو مشاريع تخرج مبهرة تلفت الانتباه.">Custom pricing based on your project requirements. We help students build impressive graduation projects that stand out.</p>
+          <div class="price-box">
+            <span class="price" data-en="Custom Price" data-ar="سعر مخصص">Custom Price</span>
+            <p class="price-note" data-en="Contact us for a quote" data-ar="تواصل معنا للسعر">Contact us for a quote</p>
+          </div>
+          <ul class="features-list">
+            <li data-en="Full Project Development" data-ar="تطوير المشروع بالكامل">Full Project Development</li>
+            <li data-en="Documentation & Presentation" data-ar="توثيق وبرزنتيشن">Documentation & Presentation</li>
+            <li data-en="Code Explanation Session" data-ar="جلسة شرح الكود">Code Explanation Session</li>
+            <li data-en="University Standards Compliant" data-ar="مطابق لمعايير الجامعة">University Standards Compliant</li>
+            <li data-en="Post-Submission Support" data-ar="دعم بعد التسليم">Post-Submission Support</li>
+          </ul>
+          <button class="package-btn accent" onclick="openSurvey()" data-en="Get Quote" data-ar="اطلب سعر">Get Quote</button>
+        </div>
+      </div>
+    </div>
+    <p class="revisions-note" data-en="Revisions not included — Available as Extra Fees" data-ar="التعديلات مش مضمنة — متاحة برسوم إضافية">Revisions not included — Available as Extra Fees</p>
+  </div>
+</section>
+
+<section class="testimonial-section" id="testimonials">
+  <div class="container">
+    <h2 data-en="What Our Clients Say" data-ar="عملانا بيقولوا إيه">What Our Clients Say</h2>
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p data-en="WePEX built our landing page in 5 days. Conversions went up 300%. Best investment we've ever made." data-ar="WePEX بنت لنا لاندينج بيدج في 5 أيام. المبيعات زادت 300%. أفضل استثمار عملناه.">WePEX built our landing page in 5 days. Conversions went up 300%. Best investment we've ever made.</p>
+          <div class="testimonial-author"><img src="team-work.jpg" alt="Client"><div><h4>Ahmed K.</h4><span data-en="Founder, TechStart" data-ar="مؤسس، TechStart">Founder, TechStart</span></div></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p data-en="The animations are insane. Our clients keep asking who built the site. WePEX is our secret weapon." data-ar="الأنيميشن مجنونة. عملانا بيسألوا مين بنى الموقع. WePEX هو سلاحنا السري.">The animations are insane. Our clients keep asking who built the site. WePEX is our secret weapon.</p>
+          <div class="testimonial-author"><img src="meeting.jpg" alt="Client"><div><h4>Sarah M.</h4><span data-en="Marketing Director, Bloom Agency" data-ar="مديرة تسويق، Bloom Agency">Marketing Director, Bloom Agency</span></div></div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p data-en="We paid 3x more with another agency and got garbage. WePEX delivered gold at half the price. Never going back." data-ar="دفعنا 3 أضعاف لوكالة تانية وطلع زبالة. WePEX جابت ذهب بنص السعر. مش راجعين.">We paid 3x more with another agency and got garbage. WePEX delivered gold at half the price. Never going back.</p>
+          <div class="testimonial-author"><img src="work-1.jpg" alt="Client"><div><h4>Karim H.</h4><span data-en="CEO, NileCommerce" data-ar="CEO، NileCommerce">CEO, NileCommerce</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq-section" id="faq">
+  <div class="container">
+    <h2 data-en="Frequently Asked Questions" data-ar="الأسئلة الشائعة">Frequently Asked Questions</h2>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="accordion" id="faqAccordion">
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1" data-en="How long does it take to build a website?" data-ar="بياخد قد إيه بناء الموقع؟">How long does it take to build a website?</button></h2>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion"><div class="accordion-body" data-en="Landing pages: 3-5 days. Multi-page sites: 1-2 weeks. E-commerce: 2-4 weeks. We work fast without compromising quality." data-ar="لاندينج بيدج: 3-5 أيام. مواقع متعددة الصفحات: 1-2 أسبوع. متجر إلكتروني: 2-4 أسابيع. بنشتغل بسرعة من غير ما نضحي الجودة.">Landing pages: 3-5 days. Multi-page sites: 1-2 weeks. E-commerce: 2-4 weeks. We work fast without compromising quality.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2" data-en="Do I need to provide content?" data-ar="محتاج أجهز المحتوى؟">Do I need to provide content?</button></h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body" data-en="Nope! We handle everything — text, images, icons, and even copywriting. Just tell us your business and we craft the perfect message." data-ar="لا! بنتولى كل حاجة — نصوص، صور، أيقونات، وحتى كتابة المحتوى. قولنا بس عن بيزنسك ونحن نصيغ الرسالة المثالية.">Nope! We handle everything — text, images, icons, and even copywriting. Just tell us your business and we craft the perfect message.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3" data-en="What if I need changes after launch?" data-ar="لو عايز تعديلات بعد الإطلاق؟">What if I need changes after launch?</button></h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body" data-en="We offer revision packages at extra fees. Minor tweaks (text/colors) start at 500 LE. Major changes are quoted separately." data-ar="بنقدم باقات تعديل برسوم إضافية. تعديلات بسيطة (نص/لون) تبدأ من 500 جنيه. التعديلات الكبيرة بسعر منفصل.">We offer revision packages at extra fees. Minor tweaks (text/colors) start at 500 LE. Major changes are quoted separately.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4" data-en="Is hosting included?" data-ar="الهوستينج مضمن؟">Is hosting included?</button></h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body" data-en="Yes! All packages include hosting setup, domain connection, and SSL certificate. We deploy on Netlify/Vercel for free hosting." data-ar="أيوه! كل الباقات بتشمل إعداد الهوستينج، ربط الدومين، وشهادة SSL. بننشر على Netlify/Vercel هوستينج مجاني.">Yes! All packages include hosting setup, domain connection, and SSL certificate. We deploy on Netlify/Vercel for free hosting.</div></div>
+          </div>
+          <div class="accordion-item">
+            <h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5" data-en="Why are your prices so low?" data-ar="ليه أسعاركم رخيصة كدا؟">Why are your prices so low?</button></h2>
+            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion"><div class="accordion-body" data-en="We're young, ambitious, and hate corporate markup. No office rent, no fancy coffee machines — just pure talent and hard work. You get agency quality at freelancer prices." data-ar="شباب، طموحيين، وكرهين هامش ربح الشركات. مفيش إيجار مكتب، مفيش ماكينات قهوة فاخرة — بس موهبة وشغل جاد. جودة وكالة بسعر فريلانسر.">We're young, ambitious, and hate corporate markup. No office rent, no fancy coffee machines — just pure talent and hard work. You get agency quality at freelancer prices.</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="row gy-5">
+      <div class="col-lg-3">
+        <div>
+          <h2 style="font-size:2rem;font-weight:900;color:var(--accent);margin-bottom:1rem;">W<span style="color:var(--primary);display:inline-block;transform:rotate(-15deg);">e</span>PEX</h2>
+          <p class="small" data-en="We build websites that convert. Young team. Better quality. Lower price. No BS." data-ar="نبني مواقع بتحول. فريق شباب. جودة أحسن. سعر أقل. بلا فلسفة.">We build websites that convert. Young team. Better quality. Lower price. No BS.</p>
+          <div class="footer-social">
+            <a href="https://facebook.com/wepex" target="_blank" title="Facebook">f</a>
+            <a href="https://instagram.com/wepex" target="_blank" title="Instagram">📷</a>
+            <a href="https://linkedin.com/company/wepex" target="_blank" title="LinkedIn">in</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-6"><div><h3 data-en="Services" data-ar="الخدمات">Services</h3><ul><li><a href="#" data-en="Landing Pages" data-ar="لاندينج بيدج">Landing Pages</a></li><li><a href="#" data-en="Corporate Sites" data-ar="مواقع شركات">Corporate Sites</a></li><li><a href="#" data-en="E-Commerce" data-ar="متاجر إلكترونية">E-Commerce</a></li><li><a href="#" data-en="Graduation Projects" data-ar="مشاريع تخرج">Graduation Projects</a></li></ul></div></div>
+      <div class="col-lg-3 col-6"><div><h3 data-en="Company" data-ar="الشركة">Company</h3><ul><li><a href="#" data-en="About Us" data-ar="عننا">About Us</a></li><li><a href="#" data-en="Our Work" data-ar="شغلنا">Our Work</a></li><li><a href="#" data-en="Careers" data-ar="وظايف">Careers</a></li><li><a href="#" data-en="Contact" data-ar="تواصل">Contact</a></li></ul></div></div>
+      <div class="col-lg-3 col-6"><div><h3 data-en="Legal" data-ar="قانوني">Legal</h3><ul><li><a href="#" data-en="Privacy Policy" data-ar="سياسة الخصوصية">Privacy Policy</a></li><li><a href="#" data-en="Terms of Service" data-ar="شروط الاستخدام">Terms of Service</a></li><li><a href="#" data-en="Refund Policy" data-ar="سياسة الاسترداد">Refund Policy</a></li></ul></div></div>
+    </div>
+    <div class="row border-top py-4 mt-5 g-md-0 gy-2 small">
+      <div class="col-md-6"><p class="mb-0">&copy; 2026 WePEX. <span data-en="All rights reserved." data-ar="جميع الحقوق محفوظة.">All rights reserved.</span></p><p class="mb-0" data-en="Built with passion by young dreamers who said 'screw it' to corporate life." data-ar="مبني بشغف من شباب حالمين قالوا 'خلاص' للحياة المكتبية.">Built with passion by young dreamers who said "screw it" to corporate life.</p></div>
+      <div class="col-md-6 d-flex justify-content-md-end"><p class="mb-0"><span data-en="Status:" data-ar="الحالة:">Status:</span> <span style="color:var(--secondary);font-weight:700;" data-en="Taking Over the Market" data-ar="بنغزو السوق">Taking Over the Market</span></p></div>
+    </div>
+  </div>
+</footer>
+
+<!-- SURVEY MODAL -->
+<div class="modal-overlay" id="surveyModal">
+  <div class="modal-box">
+    <span class="modal-close" onclick="closeSurvey()">&times;</span>
+    <h2 data-en="Let's Build Your Power Plan!" data-ar="يلا نبني خطة نجاحك!">Let's Build Your Power Plan!</h2>
+    <p data-en="Tell us about your business and our team will create the perfect website strategy for you." data-ar="قولنا عن بيزنسك وفريقنا هيصمملك أفضل استراتيجية موقع.">Tell us about your business and our team will create the perfect website strategy for you.</p>
+    <form class="survey-form" action="https://formspree.io/f/mkoaygjw" method="POST">
+      <label data-en="Your Name" data-ar="اسمك">Your Name</label>
+      <input type="text" name="name" id="clientName" placeholder="John Doe" required>
+      <label data-en="Phone Number" data-ar="رقم التليفون">Phone Number</label>
+      <input type="tel" name="phone" id="clientPhone" placeholder="+20 1XX XXX XXXX" required>
+      <label data-en="Email Address" data-ar="الإيميل">Email Address</label>
+      <input type="email" name="email" id="clientEmail" placeholder="your@email.com" required>
+      <label data-en="What's your business name?" data-ar="اسم البيزنس بتاعك؟">What's your business name?</label>
+      <input type="text" name="business" id="businessName" placeholder="e.g., WePEX" required>
+      <label data-en="What industry are you in?" data-ar="في أي مجال؟">What industry are you in?</label>
+      <select name="industry" id="industry" required>
+        <option value="" data-en="Select your industry..." data-ar="اختار المجال...">Select your industry...</option>
+        <option value="ecommerce" data-en="E-Commerce / Retail" data-ar="تجارة إلكترونية / تجزئة">E-Commerce / Retail</option>
+        <option value="service" data-en="Services / Consulting" data-ar="خدمات / استشارات">Services / Consulting</option>
+        <option value="tech" data-en="Technology / SaaS" data-ar="تكنولوجيا / SaaS">Technology / SaaS</option>
+        <option value="food" data-en="Food & Restaurant" data-ar="أكل ومطاعم">Food & Restaurant</option>
+        <option value="health" data-en="Health & Fitness" data-ar="صحة ولياقة">Health & Fitness</option>
+        <option value="education" data-en="Education / Training" data-ar="تعليم / تدريب">Education / Training</option>
+        <option value="creative" data-en="Creative / Design" data-ar="إبداع / تصميم">Creative / Design</option>
+        <option value="graduation" data-en="Graduation Project" data-ar="مشروع تخرج">Graduation Project</option>
+        <option value="other" data-en="Other" data-ar="تاني">Other</option>
+      </select>
+      <label data-en="What's your main goal?" data-ar="هدفك الرئيسي؟">What's your main goal?</label>
+      <select name="goal" id="goal" required>
+        <option value="" data-en="Select your goal..." data-ar="اختار الهدف...">Select your goal...</option>
+        <option value="leads" data-en="Get More Leads" data-ar="جيب أكتر عملا">Get More Leads</option>
+        <option value="sales" data-en="Increase Sales" data-ar="زود المبيعات">Increase Sales</option>
+        <option value="brand" data-en="Build Brand Awareness" data-ar="بني وعي بالبراند">Build Brand Awareness</option>
+        <option value="portfolio" data-en="Showcase Portfolio" data-ar="عرض Portfolio">Showcase Portfolio</option>
+        <option value="booking" data-en="Accept Bookings" data-ar="قبول حجوزات">Accept Bookings</option>
+        <option value="community" data-en="Build Community" data-ar="بني مجتمع">Build Community</option>
+        <option value="graduation" data-en="Complete Graduation Project" data-ar="إنجاز مشروع التخرج">Complete Graduation Project</option>
+      </select>
+      <label data-en="What's your budget range?" data-ar="ميزانيتك؟">What's your budget range?</label>
+      <select name="budget" id="budget" required>
+        <option value="" data-en="Select budget..." data-ar="اختار الميزانية...">Select budget...</option>
+        <option value="low" data-en="5,000 - 10,000 LE" data-ar="5,000 - 10,000 جنيه">5,000 - 10,000 LE</option>
+        <option value="mid" data-en="10,000 - 25,000 LE" data-ar="10,000 - 25,000 جنيه">10,000 - 25,000 LE</option>
+        <option value="high" data-en="25,000 - 50,000 LE" data-ar="25,000 - 50,000 جنيه">25,000 - 50,000 LE</option>
+        <option value="premium" data-en="50,000+ LE" data-ar="50,000+ جنيه">50,000+ LE</option>
+        <option value="custom" data-en="Custom / Negotiable" data-ar="مخصص / قابل للتفاوض">Custom / Negotiable</option>
+      </select>
+      <label data-en="Any specific features you need?" data-ar="محتاج ميزات معينة؟">Any specific features you need?</label>
+      <textarea name="features" id="features" rows="3" placeholder="e.g., booking system, payment gateway, chatbot..."></textarea>
+      <input type="hidden" name="_subject" value="New WePEX Client Inquiry">
+      <input type="hidden" name="_replyto" value="omargamal5800@gmail.com">
+      <button type="submit" data-en="GET MY PLAN" data-ar="جيب خطة">GET MY PLAN</button>
+    </form>
+    <div class="ai-result" id="aiResult">
+      <h3 data-en="Your Custom Strategy" data-ar="استراتيجيتك المخصصة">Your Custom Strategy</h3>
+      <p id="aiText"></p>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div class="admin-login-overlay" id="adminLogin">
+  <div class="login-box">
+    <h2 data-en="Admin Access" data-ar="دخول الأدمن">Admin Access</h2>
+    <input type="password" id="adminPassword" placeholder="Enter admin password...">
+    <button onclick="checkAdmin()" data-en="Login" data-ar="دخول">Login</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-content">
+    <h2 data-en="WePEX Admin Panel" data-ar="لوحة تحكم WePEX">WePEX Admin Panel</h2>
+    <div class="edit-section">
+      <h4 data-en="Social Media Links" data-ar="لينكات السوشيال ميديا">Social Media Links</h4>
+      <div class="admin-social">
+        <a href="https://facebook.com/wepex" target="_blank">Facebook</a>
+        <a href="https://instagram.com/wepex" target="_blank">Instagram</a>
+        <a href="https://linkedin.com/company/wepex" target="_blank">LinkedIn</a>
+      </div>
+      <p style="margin-top:1rem;font-size:0.85rem;color:#636e72;">Edit these links in the HTML code</p>
+    </div>
+    <div class="edit-section">
+      <h4 data-en="How to Edit Your Website" data-ar="ازاي تعدل الموقع">How to Edit Your Website</h4>
+      <p data-en="1. Download the index.html file" data-ar="1. حمل ملف index.html">1. Download the index.html file</p>
+      <p data-en="2. Open it in any text editor (VS Code, Notepad++, Sublime)" data-ar="2. افتحه في أي محرر نصوص">2. Open it in any text editor (VS Code, Notepad++, Sublime)</p>
+      <p data-en="3. Find the section you want to edit (search for the text)" data-ar="3. دور على القسم اللي عايز تعدله">3. Find the section you want to edit (search for the text)</p>
+      <p data-en="4. Change the text, colors, or prices" data-ar="4. غير النص، الألوان، أو الأسعار">4. Change the text, colors, or prices</p>
+      <p data-en="5. Save and re-upload to Netlify/Vercel" data-ar="5. احفظ وارفع تاني على Netlify/Vercel">5. Save and re-upload to Netlify/Vercel</p>
+    </div>
+    <div class="edit-section">
+      <h4 data-en="Quick Color Changes" data-ar="تغيير الألوان بسرعة">Quick Color Changes</h4>
+      <p>Primary Color (Red): <code>#FF6B6B</code></p>
+      <p>Secondary Color (Teal): <code>#4ECDC4</code></p>
+      <p>Accent Color (Yellow): <code>#FFE66D</code></p>
+      <p>Dark Text: <code>#2D3436</code></p>
+    </div>
+    <div class="edit-section">
+      <h4 data-en="Price Updates" data-ar="تحديث الأسعار">Price Updates</h4>
+      <p>LaunchPad: <code>5,000 LE</code></p>
+      <p>BrandSphere: <code>15,000 LE</code></p>
+      <p>CommerceFlow: <code>30,000 LE</code></p>
+      <p>Graduation: <code>Custom</code></p>
+    </div>
+    <div class="edit-section">
+      <h4 data-en="Survey Responses" data-ar="ردود الاستبيان">Survey Responses</h4>
+      <p data-en="Survey data is sent to your email via Formspree." data-ar="بيانات الاستبيان بتتبعت على إيميلك عن طريق Formspree.">Survey data is sent to your email via Formspree.</p>
+      <p data-en="Check your Gmail inbox for new submissions." data-ar="شوف inbox Gmail بتاعك للردود الجديدة.">Check your Gmail inbox for new submissions.</p>
+      <p>Email: <code>omargamal5800@gmail.com</code></p>
+    </div>
+    <div class="edit-section">
+      <h4 data-en="Re-Deploy Steps" data-ar="خطوات إعادة النشر">Re-Deploy Steps</h4>
+      <p data-en="1. Edit index.html" data-ar="1. عدل index.html">1. Edit index.html</p>
+      <p data-en="2. Go to Netlify/Vercel dashboard" data-ar="2. روح على Netlify/Vercel dashboard">2. Go to Netlify/Vercel dashboard</p>
+      <p data-en="3. Drag & drop updated file" data-ar="3. اسحب وارفع الملف المحدث">3. Drag & drop updated file</p>
+      <p data-en="4. Site updates automatically!" data-ar="4. الموقع بيتحدث تلقائياً!">4. Site updates automatically!</p>
+    </div>
+  </div>
+</div>
+
+<button class="admin-toggle" onclick="showAdminLogin()">⚙️</button>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ===== LANGUAGE SWITCHER =====
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  document.body.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+  document.body.style.fontFamily = lang === 'ar' ? "'Cairo','Poppins',sans-serif" : "'Poppins','Cairo',sans-serif";
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-ar').classList.toggle('active', lang === 'ar');
+  document.querySelectorAll('[data-en]').forEach(el => {
+    if (el.hasAttribute('data-ar')) {
+      el.textContent = el.getAttribute('data-' + lang);
+    }
+  });
+  localStorage.setItem('wepex_lang', lang);
+}
+
+const savedLang = localStorage.getItem('wepex_lang');
+if (savedLang) setLang(savedLang);
+
+// ===== SCROLL REVEAL =====
+const cards = document.querySelectorAll('.reveal-card, .text-reveal');
+const dots = document.querySelectorAll('.scroll-dot');
+let currentCard = 0;
+let isScrolling = false;
+
+function updateCards() {
+  cards.forEach((card, index) => { card.classList.toggle('active', index === currentCard); });
+  dots.forEach((dot, index) => { dot.classList.toggle('active', index === currentCard); });
+}
+
+function goToSlide(index) {
+  currentCard = index;
+  updateCards();
+}
+
+window.addEventListener('wheel', (e) => {
+  if (isScrolling) return;
+  const delta = e.deltaY;
+  if (delta > 0 && currentCard < cards.length - 1) {
+    isScrolling = true;
+    currentCard++;
+    updateCards();
+    setTimeout(() => isScrolling = false, 800);
+  } else if (delta < 0 && currentCard > 0) {
+    isScrolling = true;
+    currentCard--;
+    updateCards();
+    setTimeout(() => isScrolling = false, 800);
+  }
+});
+
+let touchStart = 0;
+window.addEventListener('touchstart', (e) => { touchStart = e.touches[0].clientY; });
+window.addEventListener('touchend', (e) => {
+  const touchEnd = e.changedTouches[0].clientY;
+  const diff = touchStart - touchEnd;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0 && currentCard < cards.length - 1) { currentCard++; updateCards(); }
+    else if (diff < 0 && currentCard > 0) { currentCard--; updateCards(); }
+  }
+});
+
+// ===== NAVBAR HIDE/SHOW ON SCROLL =====
+let lastScrollY = window.scrollY;
+let ticking = false;
+
+window.addEventListener('scroll', () => {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      const navbar = document.getElementById('navbar');
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        navbar.classList.add('hidden');
+      } else {
+        navbar.classList.remove('hidden');
+      }
+      lastScrollY = currentScrollY;
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+
+// ===== SURVEY MODAL =====
+function openSurvey() {
+  document.getElementById('surveyModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+function closeSurvey() {
+  document.getElementById('surveyModal').classList.remove('active');
+  document.body.style.overflow = 'auto';
+  document.getElementById('aiResult').classList.remove('active');
+}
+
+// ===== ADMIN =====
+function showAdminLogin() {
+  document.getElementById('adminLogin').classList.add('active');
+}
+function checkAdmin() {
+  const password = document.getElementById('adminPassword').value;
+  if (password === 'wepex2026') {
+    document.getElementById('adminLogin').classList.remove('active');
+    document.getElementById('adminPanel').classList.add('active');
+    document.getElementById('adminPassword').value = '';
+  } else {
+    alert(currentLang === 'ar' ? 'باسورد غلط! حاول تاني.' : 'Wrong password! Try again.');
+  }
+}
+
+document.addEventListener('click', (e) => {
+  const panel = document.getElementById('adminPanel');
+  const toggle = document.querySelector('.admin-toggle');
+  if (panel.classList.contains('active') && !panel.contains(e.target) && !toggle.contains(e.target)) {
+    panel.classList.remove('active');
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeSurvey();
+    document.getElementById('adminLogin').classList.remove('active');
+    document.getElementById('adminPanel').classList.remove('active');
+  }
+});
+
+document.getElementById('adminPassword').addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') checkAdmin();
+});
+</script>
+</body>
+</html>
